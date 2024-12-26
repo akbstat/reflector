@@ -4,10 +4,10 @@ use std::path::Path;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Form {
-    pub(crate) id: usize,
-    pub(crate) name: String,
-    pub(crate) page: usize,
-    pub(crate) order: i32,
+    pub id: usize,
+    pub name: String,
+    pub page: usize,
+    pub order: i32,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -25,9 +25,9 @@ pub struct FormVisitBinding {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct DBStruct {
-    pub(crate) visit: Vec<Visit>,
-    pub(crate) form: Vec<Form>,
-    pub(crate) binding: Vec<FormVisitBinding>,
+    pub visit: Vec<Visit>,
+    pub form: Vec<Form>,
+    pub binding: Vec<FormVisitBinding>,
 }
 
 pub enum DBKind {

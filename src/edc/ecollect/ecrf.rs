@@ -24,6 +24,18 @@ impl ECRF for ECollectECRF {
     fn form_page(&self, form: &str) -> Option<usize> {
         self.data.get(form).map(|page| *page)
     }
+
+    fn list_forms(&self) -> Vec<String> {
+        let mut list = self
+            .data
+            .keys()
+            .cloned()
+            .into_iter()
+            .map(|s| (s.clone(), *self.data.get(&s).unwrap()))
+            .collect::<Vec<(String, usize)>>();
+        list.sort_by(|a, b| a.1.cmp(&b.1));
+        list.into_iter().map(|(s, _)| s).collect()
+    }
 }
 
 #[test]
