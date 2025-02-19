@@ -2,6 +2,8 @@ use crate::ecrf::ECRF;
 use serde::{Deserialize, Serialize};
 use std::path::Path;
 
+use super::{ecollect::db::EcollectDBStructReader, rave::db::RaveDBStructReader};
+
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Form {
     pub id: usize,
@@ -30,10 +32,19 @@ pub struct DBStruct {
     pub binding: Vec<FormVisitBinding>,
 }
 
+#[derive(Debug, Deserialize)]
 pub enum DBKind {
-    ECOLLECT,
+    ECollect,
+    Rave,
 }
 
-pub trait DBStructReader<P: AsRef<Path>, E: ECRF> {
-    fn read(&self, p: P, ecrf: E) -> anyhow::Result<DBStruct>;
+pub trait DBStructReader<P: AsRef<Path>> {
+    fn read(&self, p: P, ecrf: Box<dyn ECRF>) -> anyhow::Result<DBStruct>;
+}
+
+pub fn db_reader<P: AsRef<Path>>(kind: &DBKind) -> Box<dyn DBStructReader<P>> {
+    match kind {
+        DBKind::ECollect => Box::new(EcollectDBStructReader::new()),
+        DBKind::Rave => Box::new(RaveDBStructReader::new()),
+    }
 }

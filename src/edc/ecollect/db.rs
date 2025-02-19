@@ -15,8 +15,8 @@ impl EcollectDBStructReader {
     }
 }
 
-impl<P: AsRef<Path>, E: ECRF> DBStructReader<P, E> for EcollectDBStructReader {
-    fn read(&self, p: P, ecrf: E) -> anyhow::Result<DBStruct> {
+impl<P: AsRef<Path>> DBStructReader<P> for EcollectDBStructReader {
+    fn read(&self, p: P, ecrf: Box<dyn ECRF>) -> anyhow::Result<DBStruct> {
         let mut workbook: Xlsx<_> = open_workbook(p)?;
         let sheet = workbook.worksheet_range(TARGET_SHEET)?;
         let (row, column) = sheet.get_size();
@@ -91,7 +91,7 @@ mod tests {
             r"D:\projects\rusty\acrf_outline\.data\ecollect\database_export_AK120-301_20240606_0000.xlsx",
         );
         let reader = EcollectDBStructReader::new();
-        let result = reader.read(p, ecrf)?;
+        let result = reader.read(p, Box::new(ecrf))?;
         assert_eq!(result.form.len(), 50);
         assert_eq!(result.visit.len(), 32);
         Ok(())
