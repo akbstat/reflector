@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.94"
-calamine = "0.26.1"
+calamine = "0.27.0"
 headless_chrome = "1.0.15"
 lopdf = "0.34.0"
 nanoid = "0.4.0"
